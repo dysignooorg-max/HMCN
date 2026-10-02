@@ -10,6 +10,18 @@ const __dirname = path.dirname(__filename);
 
 // https://vite.dev/config/
 export default defineConfig({
+  /**
+   * Public base path.
+   *
+   * GitHub Pages serves this repo from a subpath
+   * (https://dysignooorg-max.github.io/HMCN/), so assets must be requested
+   * from /HMCN/favicon.svg rather than /favicon.svg. The deploy workflow sets
+   * VITE_BASE=/HMCN/ for that reason.
+   *
+   * A custom domain (e.g. helpmycoursenow.com) serves from the root, so the
+   * default "/" is correct there and no override is needed.
+   */
+  base: process.env.VITE_BASE || "/",
   plugins: [react(), tailwindcss(), viteSingleFile()],
   resolve: {
     alias: {
