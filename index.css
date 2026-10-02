@@ -1,0 +1,312 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-purple: #3D348B;
+  --color-brand-purple-light: #7678ED;
+  --color-brand-gold: #F7B801;
+  --color-brand-orange: #F18701;
+  --color-brand-red: #F35B04;
+  --color-brand-purple-dark: #2A2565;
+  --color-brand-lavender: #F9F9FF;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  color: #1f1f2e;
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* ====================================
+   LOGO SLIDER — True infinite marquee
+   ==================================== */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes scroll-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.marquee-left {
+  animation: scroll-left 45s linear infinite;
+}
+.marquee-right {
+  animation: scroll-right 50s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+}
+.marquee-container::before,
+.marquee-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  z-index: 2;
+  pointer-events: none;
+}
+.marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, #F9F9FF 0%, transparent 100%);
+}
+.marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, #F9F9FF 0%, transparent 100%);
+}
+
+/* Announcement bar mobile marquee */
+@keyframes announce-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.announce-marquee {
+  animation: announce-scroll 18s linear infinite;
+}
+
+/* ====================================
+   WhatsApp Floating Button Pulse
+   ==================================== */
+@keyframes wa-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+  70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+.wa-pulse {
+  animation: wa-pulse 2s ease-out infinite;
+}
+
+/* ====================================
+   Mobile Bottom Bar slide-up
+   ==================================== */
+@keyframes slide-up-bar {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.mobile-bar-in {
+  animation: slide-up-bar 0.35s ease-out forwards;
+}
+
+/* ====================================
+   Fade-in on scroll (IntersectionObserver)
+   ==================================== */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ====================================
+   Slide in for live notification
+   ==================================== */
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.slide-in-up {
+  animation: slideInUp 0.4s ease-out both;
+}
+
+/* ====================================
+   Card hover lift
+   ==================================== */
+.lift-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.lift-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(61, 52, 139, 0.15);
+  border-color: #7678ED;
+}
+
+/* ====================================
+   Buttons
+   ==================================== */
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #F35B04;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  border-radius: 10px;
+  min-height: 54px;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 8px 20px rgba(243, 91, 4, 0.35);
+  cursor: pointer;
+}
+.btn-cta:hover {
+  background: #d94e02;
+  transform: scale(1.02);
+}
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #F18701;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  border-radius: 10px;
+  min-height: 54px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background: #d97600;
+  transform: scale(1.02);
+}
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #F7B801;
+  color: #2A2565;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  border-radius: 10px;
+  min-height: 54px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.btn-gold:hover {
+  background: #e5aa00;
+  transform: scale(1.02);
+}
+
+/* ====================================
+   Wave bottom shape
+   ==================================== */
+.hero-wave {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  line-height: 0;
+}
+
+/* ====================================
+   Inputs
+   ==================================== */
+.field {
+  width: 100%;
+  min-height: 54px;
+  border: 1.5px solid #e1e1ec;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 16px;
+  background: white;
+  color: #1f1f2e;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field:focus {
+  border-color: #7678ED;
+  box-shadow: 0 0 0 3px rgba(118, 120, 237, 0.15);
+}
+textarea.field {
+  height: auto;
+  padding: 12px 14px;
+  min-height: 90px;
+}
+
+/* ====================================
+   FAQ Accordion smooth open/close
+   ==================================== */
+.faq-answer {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+  padding: 0 20px;
+}
+.faq-answer.open {
+  max-height: 500px;
+  opacity: 1;
+  padding: 0 20px 20px 20px;
+}
+
+/* ====================================
+   Section helpers
+   ==================================== */
+.section-pad { padding-top: 72px; padding-bottom: 72px; }
+@media (max-width: 768px) {
+  .section-pad { padding-top: 48px; padding-bottom: 48px; }
+}
+
+/* ====================================
+   Background pattern
+   ==================================== */
+.bg-pattern {
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0, transparent 30%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.08) 0, transparent 30%);
+}
+
+/* ====================================
+   WhatsApp tooltip
+   ==================================== */
+.wa-tooltip {
+  position: relative;
+}
+.wa-tooltip::before {
+  content: 'Chat With Us Now';
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: #3D348B;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 8px 14px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.wa-tooltip::after {
+  content: '';
+  position: absolute;
+  right: calc(100% + 4px);
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: #3D348B;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.wa-tooltip:hover::before,
+.wa-tooltip:hover::after {
+  opacity: 1;
+}
