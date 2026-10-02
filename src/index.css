@@ -16,6 +16,50 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Visible focus ring for keyboard users — links and buttons were relying on
+   the browser default, which is invisible against the purple backgrounds. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #F7B801;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Respect the visitor's motion preference. The site has several permanent
+   animations (logo marquee, announcement marquee, pulsing chat button) which
+   can cause discomfort for people with vestibular disorders. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track,
+  .announce-marquee,
+  .wa-pulse,
+  .mobile-bar-in,
+  .slide-in-up {
+    animation: none !important;
+  }
+  /* Keep reveal-on-scroll content visible — it must never stay hidden. */
+  .reveal-section {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .lift-card:hover {
+    transform: none;
+  }
+}
+
 body {
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
   font-size: 16px;
@@ -308,5 +352,30 @@ textarea.field {
 }
 .wa-tooltip:hover::before,
 .wa-tooltip:hover::after {
+  opacity: 1;
+}
+
+/* Same tooltip, honest label, used when no WhatsApp number is configured. */
+.chat-tooltip {
+  position: relative;
+}
+.chat-tooltip::before {
+  content: 'Message Us Now';
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: #3D348B;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 8px 14px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.chat-tooltip:hover::before {
   opacity: 1;
 }

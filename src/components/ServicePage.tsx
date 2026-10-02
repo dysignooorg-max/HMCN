@@ -1,15 +1,18 @@
 import { CTASection, PageHero } from "./Layout";
 import LeadForm from "./LeadForm";
+import Link from "./Link";
 import { Service, services, testimonials } from "../data";
+import { PHONE_DISPLAY, phoneUrl, phoneOpensWhatsApp } from "../config";
+import { trackContact } from "../utils/pixel";
 
-type Props = { service: Service; navigate: (p: string) => void };
+type Props = { service: Service };
 
-export default function ServicePage({ service, navigate }: Props) {
+export default function ServicePage({ service }: Props) {
   const related = services.filter((s) => s.slug !== service.slug).slice(0, 3);
 
   return (
     <>
-      <PageHero title={service.hero} subtitle={service.short} navigate={navigate} />
+      <PageHero title={service.hero} subtitle={service.short} />
 
       <section className="bg-white py-14 reveal-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-3 gap-10">
@@ -57,10 +60,10 @@ export default function ServicePage({ service, navigate }: Props) {
               <h2 className="font-display font-bold text-[#3D348B] text-xl">Related Services</h2>
               <div className="grid sm:grid-cols-3 gap-4 mt-4">
                 {related.map((r) => (
-                  <button key={r.slug} onClick={() => navigate(`/services/${r.slug}`)} className="text-left bg-white border-2 border-[#eeeefb] rounded-xl p-4 lift-card">
+                  <Link key={r.slug} to={`/services/${r.slug}`} className="text-left bg-white border-2 border-[#eeeefb] rounded-xl p-4 lift-card">
                     <div className="text-2xl">{r.emoji}</div>
                     <div className="font-display font-bold text-[#3D348B] mt-1 text-base">{r.title}</div>
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -69,15 +72,29 @@ export default function ServicePage({ service, navigate }: Props) {
           <aside className="lg:sticky lg:top-[140px] h-max space-y-5">
             <LeadForm title={`Get Help With ${service.title}`} />
             <div className="bg-[#3D348B] text-white rounded-2xl p-5 text-center">
-              <div className="text-3xl">📞</div>
-              <p className="text-base mt-2 opacity-90">Prefer to talk first?</p>
-              <a href="tel:+10000000000" className="btn-secondary w-full h-[54px] mt-3">Call Us 24/7</a>
+              <div className="text-3xl">{phoneOpensWhatsApp() ? "💬" : "📞"}</div>
+              <p className="text-base mt-2 opacity-90">
+                {phoneOpensWhatsApp() ? "Prefer to chat first?" : "Prefer to talk first?"}
+              </p>
+              {PHONE_DISPLAY ? (
+                <a
+                  href={phoneUrl()}
+                  target={phoneOpensWhatsApp() ? "_blank" : undefined}
+                  rel={phoneOpensWhatsApp() ? "noopener noreferrer" : undefined}
+                  onClick={() => trackContact()}
+                  className="btn-secondary w-full h-[54px] mt-3"
+                >
+                  {phoneOpensWhatsApp() ? `💬 WhatsApp ${PHONE_DISPLAY}` : `📞 Call ${PHONE_DISPLAY}`}
+                </a>
+              ) : (
+                <p className="text-sm opacity-80 mt-3">Use the form and we'll reply in ~5 minutes, 24/7.</p>
+              )}
             </div>
           </aside>
         </div>
       </section>
 
-      <CTASection navigate={navigate} />
+      <CTASection />
     </>
   );
 }

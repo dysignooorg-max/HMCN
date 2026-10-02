@@ -319,20 +319,20 @@ export const blogCategories = [
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "how-to-pass-ged-exam-2025",
-    title: "How to Pass Your GED Exam in 2025: Complete Guide for Adult Learners",
+    slug: "how-to-pass-ged-exam",
+    title: "How to Pass Your GED Exam in 2026: Complete Guide for Adult Learners",
     category: "GED Exam Help & Tips",
     excerpt:
-      "A complete, no-fluff guide to passing the GED in 2025 — including study schedule, GED Online testing, scoring, and where to get expert help.",
-    date: "Jan 12, 2025",
+      "A complete, no-fluff guide to passing the GED in 2026 — including study schedule, GED Online testing, scoring, and where to get expert help.",
+    date: "Apr 14, 2026",
     readTime: "9 min read",
     body: [
-      { paragraph: "If you're searching for how to pass your GED exam in 2025, you're in the right place. The GED (General Educational Development) is the most widely recognized high school equivalency credential in the United States, accepted by 98% of US colleges and employers." },
+      { paragraph: "If you're searching for how to pass your GED exam in 2026, you're in the right place. The GED (General Educational Development) is the most widely recognized high school equivalency credential in the United States, accepted by 98% of US colleges and employers." },
       { heading: "What Is The GED Exam?" },
       { paragraph: "The GED is a four-subject test that proves you have high-school level academic skills. Subjects: Mathematical Reasoning, Reasoning Through Language Arts (RLA), Science, and Social Studies." },
       { heading: "GED Online vs. Test-Center GED" },
       { paragraph: "Since 2020, the GED can be taken online from home using OnVUE proctoring software. You'll need a quiet room, a webcam, a microphone, and a stable internet connection." },
-      { heading: "GED Passing Score In 2025" },
+      { heading: "GED Passing Score In 2026" },
       { paragraph: "You need a 145 on each of the four subject tests to pass. A 165–174 earns 'College Ready' status, and 175+ earns 'College Ready + Credit'." },
       { heading: "How To Study For The GED" },
       { list: [
@@ -351,7 +351,7 @@ export const blogPosts: BlogPost[] = [
     category: "Online Proctored Exam Guide",
     excerpt:
       "Online proctored exams use AI and live monitors to watch you while you test. Here's everything you need to know — and how to pass without stress.",
-    date: "Jan 18, 2025",
+    date: "May 06, 2026",
     readTime: "8 min read",
     body: [
       { paragraph: "An online proctored exam is a test you take from home while being monitored through your webcam, microphone and screen. Common platforms include ProctorU, Honorlock, Examity, Proctorio, Respondus LockDown Browser, and Pearson VUE OnVUE." },
@@ -370,15 +370,15 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "teas-exam-2025-guide",
-    title: "TEAS Exam 2025: Everything Nursing Students Need to Know Before Test Day",
+    slug: "teas-exam-guide",
+    title: "TEAS Exam 2026: Everything Nursing Students Need to Know Before Test Day",
     category: "TEAS Exam Preparation",
     excerpt:
       "Your complete TEAS 7 study and test-day guide. Sections, scoring, what schools require, and where to get expert help if you're behind.",
-    date: "Jan 22, 2025",
+    date: "May 27, 2026",
     readTime: "10 min read",
     body: [
-      { paragraph: "The TEAS (Test of Essential Academic Skills) is the #1 nursing school entrance exam in the USA. The current version, TEAS 7, was released by ATI in 2022 and is what you'll take in 2025." },
+      { paragraph: "The TEAS (Test of Essential Academic Skills) is the #1 nursing school entrance exam in the USA. The current version, TEAS 7, was released by ATI in 2022 and is what you'll take in 2026." },
       { heading: "TEAS 7 Sections" },
       { list: [
           "Reading — 45 questions, 55 minutes",
@@ -398,7 +398,7 @@ export const blogPosts: BlogPost[] = [
     category: "WGU Student Resources",
     excerpt:
       "WGU's competency-based model lets you accelerate your degree — but only if you know how to play the game. Here's the full strategy.",
-    date: "Jan 25, 2025",
+    date: "Jun 10, 2026",
     readTime: "11 min read",
     body: [
       { paragraph: "Western Governors University (WGU) is the most popular fully online, accelerated university in the United States. Its competency-based model means you can finish a 12-month term in as little as 6 weeks if you move fast." },
@@ -414,12 +414,12 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "comptia-aplus-exam-guide-2025",
-    title: "CompTIA A+ Exam Guide 2025: Pass on Your First Attempt",
+    slug: "comptia-aplus-exam-guide",
+    title: "CompTIA A+ Exam Guide 2026: Pass on Your First Attempt",
     category: "CompTIA & IT Certifications",
     excerpt:
-      "Everything you need to pass CompTIA A+ Core 1 (220-1101) and Core 2 (220-1102) on the first try in 2025.",
-    date: "Jan 28, 2025",
+      "Everything you need to pass CompTIA A+ Core 1 (220-1101) and Core 2 (220-1102) on the first try in 2026.",
+    date: "Jun 24, 2026",
     readTime: "9 min read",
     body: [
       { paragraph: "CompTIA A+ is the entry-level IT certification. Pass both Core 1 and Core 2, and you've proven you can support modern hardware, networks, mobile devices, security and operating systems." },
@@ -438,7 +438,7 @@ export const blogPosts: BlogPost[] = [
     category: "Online College Course Help",
     excerpt:
       "Adult learners juggle more than anyone. Here's a real-life system for surviving — and winning — online school while working full time and raising kids.",
-    date: "Feb 02, 2025",
+    date: "Jul 08, 2026",
     readTime: "7 min read",
     body: [
       { paragraph: "If you're an adult learner working full time, raising children, and trying to finish a degree online, you are not failing. The system was not designed for you. Here's how to win anyway." },
@@ -447,12 +447,12 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "ged-vs-hiset-2025",
-    title: "GED vs HiSET: Which High School Equivalency Test Should You Take in 2025?",
+    slug: "ged-vs-hiset",
+    title: "GED vs HiSET: Which High School Equivalency Test Should You Take in 2026?",
     category: "GED Exam Help & Tips",
     excerpt:
       "The GED is more famous, but the HiSET is easier in many ways. Here's a side-by-side comparison so you can pick the right one for your state.",
-    date: "Feb 05, 2025",
+    date: "Jul 22, 2026",
     readTime: "8 min read",
     body: [
       { paragraph: "Both the GED and HiSET are accepted as high school equivalency credentials in most US states. But they are very different exams." },
@@ -466,12 +466,12 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "nclex-exam-tips-2025",
-    title: "NCLEX Exam Tips 2025: What Nursing Students Must Know",
+    slug: "nclex-exam-tips",
+    title: "NCLEX Exam Tips 2026: What Nursing Students Must Know",
     category: "NCLEX Nursing Exam Tips",
     excerpt:
-      "NCLEX-RN and NCLEX-PN updated test plans for 2025, Next-Gen NCLEX item types, and how to pass even if you're testing soon.",
-    date: "Feb 08, 2025",
+      "NCLEX-RN and NCLEX-PN updated test plans for 2026, Next-Gen NCLEX item types, and how to pass even if you're testing soon.",
+    date: "Aug 19, 2026",
     readTime: "10 min read",
     body: [
       { paragraph: "The Next Generation NCLEX (NGN), launched in 2023, is now standard. It uses case studies, bowtie items, drag-and-drop and clinical-judgment scoring." },
@@ -491,7 +491,7 @@ export const blogPosts: BlogPost[] = [
     category: "Online College Course Help",
     excerpt:
       "Honest answers about privacy, detection, and how to choose an online exam help service that actually protects you.",
-    date: "Feb 12, 2025",
+    date: "Sep 09, 2026",
     readTime: "6 min read",
     body: [
       { paragraph: "If you're considering hiring an expert to help with an online course or exam, your #1 question is probably: 'Is this safe?' The honest answer is — it depends on who you hire." },
@@ -510,8 +510,8 @@ export const blogPosts: BlogPost[] = [
     title: "How Online Exam Help Services Work: A Complete Student Guide",
     category: "Student Success Stories",
     excerpt:
-      "From the moment you reach out to the moment you see your passing grade — here's exactly how online exam help services work in 2025.",
-    date: "Feb 15, 2025",
+      "From the moment you reach out to the moment you see your passing grade — here's exactly how online exam help services work in 2026.",
+    date: "Sep 30, 2026",
     readTime: "7 min read",
     body: [
       { paragraph: "Online exam help services have grown into a full industry serving hundreds of thousands of adult learners across the United States. Here's how the process actually works." },

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  IMPORTANT — read before editing.
+
+  This site currently uses HASH routing: the About page lives at
+  "https://www.helpmycoursenow.com/#/about", not "/about".
+
+  Search engines treat every hash route as the SAME page, so listing
+  "/#/about" here would be pointless — there is only one indexable URL.
+  That is why only the homepage is listed.
+
+  TO GET EVERY PAGE INDEXED (recommended, biggest SEO win available):
+  switch from hash routing to real paths, then list every page here.
+  See "Switching to real URLs" in README.md.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.helpmycoursenow.com/</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
