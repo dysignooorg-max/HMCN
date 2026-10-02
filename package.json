@@ -11,6 +11,9 @@
     "smoke": "esbuild scripts/smoke-test.tsx --bundle --platform=node --format=esm --outfile=scripts/.smoke.mjs --loader:.tsx=tsx --jsx=automatic --external:react --external:react-dom --log-level=error && node scripts/.smoke.mjs",
     "verify": "npm run typecheck && npm run smoke && npm run build"
   },
+  "allowScripts": {
+    "esbuild": true
+  },
   "dependencies": {
     "clsx": "2.1.1",
     "react": "19.2.6",
