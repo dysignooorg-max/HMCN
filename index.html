@@ -10,64 +10,69 @@
     <meta name="keywords" content="online exam help, take my online exam, GED exam help USA, proctored exam help, online course help, TEAS exam help, WGU course help, CompTIA exam help, NCLEX exam help, HiSET, HESI" />
     <link rel="canonical" href="https://www.helpmycoursenow.com/" />
 
-    <!-- Open Graph -->
+    <!-- Open Graph / social sharing -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="HelpMyCourseNow | Expert Online Exam & Course Help USA" />
     <meta property="og:description" content="Get expert help for your online exams, GED, TEAS, WGU courses and certifications. 100% confidential. Serving students across USA." />
     <meta property="og:url" content="https://www.helpmycoursenow.com/" />
     <meta property="og:site_name" content="HelpMyCourseNow" />
+    <meta property="og:image" content="https://www.helpmycoursenow.com/og-image.jpg" />
+    <meta property="og:image:secure_url" content="https://www.helpmycoursenow.com/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="HelpMyCourseNow — Expert Help. Real Results. Online exam and course help across the USA." />
+    <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HelpMyCourseNow | Expert Online Exam & Course Help USA" />
+    <meta name="twitter:description" content="Get expert help for your online exams, GED, TEAS, WGU courses and certifications. 100% confidential. Serving students across USA." />
+    <meta name="twitter:image" content="https://www.helpmycoursenow.com/og-image.jpg" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
 
     <!-- Preconnect Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
 
-    <!-- Schema.org LocalBusiness + Service + AggregateRating -->
+    <!-- Schema.org LocalBusiness -->
+    <!-- NOTE: aggregateRating was removed on purpose. Inventing a rating /
+         review count in structured data violates Google's structured-data
+         policy and can get the whole site demoted or flagged as spam.
+         Only re-add it if the reviews are real and verifiable. -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "HelpMyCourseNow",
-      "image": "https://www.helpmycoursenow.com/logo.png",
       "url": "https://www.helpmycoursenow.com",
-      "telephone": "+1-000-000-0000",
       "priceRange": "$$",
       "address": {
         "@type": "PostalAddress",
         "addressCountry": "US"
       },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "10243"
-      },
       "description": "HelpMyCourseNow provides expert help for online exams, GED, TEAS, WGU, CompTIA, NCLEX and proctored exams across the USA."
     }
     </script>
 
-    <!-- Meta Pixel Code -->
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1006351395297013');
-    fbq('track', 'PageView');
-    </script>
-    <noscript>
-    <img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1006351395297013
-    &ev=PageView&noscript=1"/>
-    </noscript>
-    <!-- End Meta Pixel Code -->
+    <!-- Meta Pixel Code — GDPR/CCPA COMPLIANT VERSION -->
+    <!-- The pixel is loaded but NOT activated until the visitor clicks
+         "Accept All Cookies". The previous version fired fbq('init') and
+         fbq('track','PageView') on page load, which sent data to Facebook
+         BEFORE consent was given — making the cookie banner pointless.
+         To enable ad tracking: edit src/utils/pixel.ts -->
   </head>
   <body>
     <div id="root"></div>
+    <!-- NOTE: the Meta Pixel <noscript> beacon was removed on purpose.
+         It fired a PageView for visitors with JavaScript disabled, who can
+         never see the cookie banner and therefore can never consent. The
+         pixel now only ever loads through src/utils/pixel.ts, after consent. -->
+    <noscript>
+      <p style="max-width:640px;margin:40px auto;font-family:system-ui,sans-serif;text-align:center">
+        This site needs JavaScript enabled to work. Please enable it, or
+        email us at hello@helpmycoursenow.com and we'll help you directly.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

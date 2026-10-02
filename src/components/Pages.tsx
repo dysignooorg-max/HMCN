@@ -1,14 +1,23 @@
 import { useState } from "react";
 import { CTASection, PageHero } from "./Layout";
 import LeadForm from "./LeadForm";
-import { homeFaqs, testimonials, blogPosts, blogCategories, examOptions } from "../data";
+import Link from "./Link";
+import { homeFaqs, testimonials, blogPosts, blogCategories, examOptions, services } from "../data";
 import { trackLead, trackContact } from "../utils/pixel";
+import { submitLead } from "../utils/lead";
+import { VIDEO_EMBED_URL } from "../config";
 
-const FB_LINK = "https://www.facebook.com/profile.php?id=61589640929259";
-type Nav = { navigate: (p: string) => void };
+import {
+  EMAIL,
+  PHONE_E164,
+  PHONE_DISPLAY,
+  PRIVACY_EMAIL,
+  chatUrl,
+  hasWhatsApp,
+} from "../config";
 
 /* ==================== HOW IT WORKS ==================== */
-export function HowItWorksPage({ navigate }: Nav) {
+export function HowItWorksPage() {
   const steps = [
     { n: 1, e: "🖊️", t: "Tell Us What You Need", b: "Fill our 60-second form, message us on WhatsApp, or call. Tell us your exam, course, deadline and what kind of help you need." },
     { n: 2, e: "🤝", t: "We Match You With An Expert", b: "Our team reviews your request and matches you with a vetted expert who specializes in your exact platform — usually within 5–30 minutes." },
@@ -18,17 +27,34 @@ export function HowItWorksPage({ navigate }: Nav) {
   ];
   return (
     <>
-      <PageHero title="How HelpMyCourseNow Works" subtitle="From your first message to your passing grade — here's the full process, end-to-end." navigate={navigate} />
+      <PageHero title="How HelpMyCourseNow Works" subtitle="From your first message to your passing grade — here's the full process, end-to-end." />
       <section className="section-pad bg-white reveal-section">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="aspect-video w-full rounded-2xl bg-gradient-to-br from-[#3D348B] to-[#7678ED] flex items-center justify-center text-white relative overflow-hidden">
-            <div className="bg-pattern absolute inset-0" />
-            <div className="text-center relative">
-              <div className="text-6xl">▶</div>
-              <p className="font-display font-bold text-xl mt-3">Watch: How It Works (90 sec)</p>
-              <p className="text-base opacity-90">Coming soon</p>
+          {VIDEO_EMBED_URL ? (
+            <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl">
+              <iframe
+                src={VIDEO_EMBED_URL}
+                title="How HelpMyCourseNow works"
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
             </div>
-          </div>
+          ) : (
+            <div className="grid sm:grid-cols-3 gap-4">
+              {[
+                ["⏱️", "Takes 2 Minutes", "One short form is all we need to get started."],
+                ["⚡", "Matched In 5 Minutes", "A specialist for your exact exam reviews your request."],
+                ["🎯", "You Get Results", "Backed by our money-back guarantee."],
+              ].map(([e, t, b]) => (
+                <div key={t} className="bg-[#F9F9FF] border-2 border-[#eeeefb] rounded-2xl p-6 text-center">
+                  <div className="text-4xl">{e}</div>
+                  <div className="font-display font-bold text-[#3D348B] text-lg mt-2">{t}</div>
+                  <div className="text-[#3D348B]/70 text-base mt-1">{b}</div>
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="mt-12 space-y-6">
             {steps.map((s) => (
@@ -61,16 +87,16 @@ export function HowItWorksPage({ navigate }: Nav) {
           </div>
         </div>
       </section>
-      <CTASection navigate={navigate} />
+      <CTASection />
     </>
   );
 }
 
 /* ==================== ABOUT ==================== */
-export function AboutPage({ navigate }: Nav) {
+export function AboutPage() {
   return (
     <>
-      <PageHero title="About HelpMyCourseNow" subtitle="We help adult learners across America get the diplomas, degrees and certifications they deserve — without burning out." navigate={navigate} />
+      <PageHero title="About HelpMyCourseNow" subtitle="We help adult learners across America get the diplomas, degrees and certifications they deserve — without burning out." />
       <section className="section-pad bg-white reveal-section">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-10 items-start">
           <div>
@@ -104,13 +130,13 @@ export function AboutPage({ navigate }: Nav) {
           </div>
         </div>
       </section>
-      <CTASection navigate={navigate} />
+      <CTASection />
     </>
   );
 }
 
 /* ==================== CONTACT ==================== */
-export function ContactPage({ navigate }: Nav) {
+export function ContactPage() {
   return (
     <>
       <PageHero title="Get In Touch — We Reply In 5 Minutes" subtitle="Fill the form, send a WhatsApp, or call us. We're available 24/7 across the United States." />
@@ -124,20 +150,22 @@ export function ContactPage({ navigate }: Nav) {
             </div>
           </div>
           <div className="space-y-5">
-            <a href={FB_LINK} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="block bg-[#25D366] text-white rounded-2xl p-7 hover:scale-[1.01] transition lift-card">
+            <a href={chatUrl()} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="block bg-[#25D366] text-white rounded-2xl p-7 hover:scale-[1.01] transition lift-card">
               <div className="text-4xl">💬</div>
-              <div className="font-display font-extrabold text-2xl mt-2">Message Us On WhatsApp</div>
+              <div className="font-display font-extrabold text-2xl mt-2">{hasWhatsApp() ? "Message Us On WhatsApp" : "Message Us Now"}</div>
               <div className="opacity-90 mt-1 text-base">Fastest way to get matched with an expert.</div>
             </a>
-            <a href="tel:+10000000000" className="block bg-[#3D348B] text-white rounded-2xl p-7 hover:scale-[1.01] transition lift-card">
-              <div className="text-4xl">📞</div>
-              <div className="font-display font-extrabold text-2xl mt-2">Call Us 24/7</div>
-              <div className="opacity-90 mt-1 text-base">+1 (000) 000-0000</div>
-            </a>
-            <a href="mailto:hello@helpmycoursenow.com" className="block bg-[#7678ED] text-white rounded-2xl p-7 hover:scale-[1.01] transition lift-card">
+            {PHONE_E164 && (
+              <a href={`tel:+${PHONE_E164}`} className="block bg-[#3D348B] text-white rounded-2xl p-7 hover:scale-[1.01] transition lift-card">
+                <div className="text-4xl">📞</div>
+                <div className="font-display font-extrabold text-2xl mt-2">Call Us 24/7</div>
+                <div className="opacity-90 mt-1 text-base">{PHONE_DISPLAY}</div>
+              </a>
+            )}
+            <a href={`mailto:${EMAIL}`} className="block bg-[#7678ED] text-white rounded-2xl p-7 hover:scale-[1.01] transition lift-card">
               <div className="text-4xl">📧</div>
               <div className="font-display font-extrabold text-2xl mt-2">Email Us</div>
-              <div className="opacity-90 mt-1 text-base">hello@helpmycoursenow.com</div>
+              <div className="opacity-90 mt-1 text-base">{EMAIL}</div>
             </a>
             <div className="bg-[#F9F9FF] rounded-2xl p-6 border-2 border-[#eeeefb]">
               <div className="text-xl font-display font-bold text-[#3D348B]">⏰ Operating Hours</div>
@@ -154,48 +182,170 @@ export function ContactPage({ navigate }: Nav) {
           </div>
         </div>
       </section>
-      <CTASection navigate={navigate} />
+      <CTASection />
     </>
   );
 }
 
 function FullContactForm() {
-  const [submitted, setSubmitted] = useState(false);
-  if (submitted) {
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "handoff">("idle");
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    exam: "",
+    deadline: "",
+    message: "",
+    company: "", // honeypot
+  });
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setState("sending");
+    const result = await submitLead({
+      name: data.name,
+      contact: data.email || data.phone,
+      email: data.email,
+      phone: data.phone,
+      exam: data.exam,
+      deadline: data.deadline,
+      message: data.message,
+      source: "contact-page",
+      company: data.company,
+    });
+    trackLead();
+    setState(result.ok && result.mode === "endpoint" ? "sent" : "handoff");
+  }
+
+  if (state === "sent" || state === "handoff") {
     return (
       <div className="text-center py-8">
         <div className="w-16 h-16 rounded-full bg-[#F35B04] mx-auto flex items-center justify-center text-white text-3xl">✓</div>
-        <h3 className="font-display font-bold text-[#3D348B] text-2xl mt-4">Got It!</h3>
-        <p className="text-[#3D348B]/70 mt-2 text-base">An expert will reach out in under 5 minutes.</p>
+        <h3 className="font-display font-bold text-[#3D348B] text-2xl mt-4">
+          {state === "sent" ? "Got It!" : "Almost Done — Press Send"}
+        </h3>
+        <p className="text-[#3D348B]/70 mt-2 text-base">
+          {state === "sent"
+            ? "An expert will reach out in under 5 minutes."
+            : "We've opened a message with your details. Just hit send and we'll reply within 5 minutes."}
+        </p>
+        <a href={chatUrl()} target="_blank" rel="noopener noreferrer" className="btn-cta mt-5 h-[54px] px-7">
+          💬 Message Us Now
+        </a>
       </div>
     );
   }
+
   return (
-    <form onSubmit={(e) => { e.preventDefault(); trackLead(); setSubmitted(true); }} className="space-y-3">
+    <form onSubmit={onSubmit} className="space-y-3">
       <div className="grid sm:grid-cols-2 gap-3">
-        <input required className="field" placeholder="Full Name" />
-        <input required className="field" placeholder="Email Address" type="email" />
+        <div>
+          <label htmlFor="cf-name" className="sr-only">Full name</label>
+          <input id="cf-name" required className="field" placeholder="Full Name"
+            value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })} />
+        </div>
+        <div>
+          <label htmlFor="cf-email" className="sr-only">Email address</label>
+          <input id="cf-email" required className="field" placeholder="Email Address" type="email"
+            value={data.email} onChange={(e) => setData({ ...data, email: e.target.value })} />
+        </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-3">
-        <input required className="field" placeholder="WhatsApp / Phone #" />
-        <select required className="field" defaultValue="">
-          <option value="" disabled>Select Service</option>
-          {examOptions.map((o) => <option key={o} value={o}>{o}</option>)}
-        </select>
+        <div>
+          <label htmlFor="cf-phone" className="sr-only">WhatsApp or phone number</label>
+          <input id="cf-phone" required className="field" placeholder="WhatsApp / Phone #"
+            value={data.phone} onChange={(e) => setData({ ...data, phone: e.target.value })} />
+        </div>
+        <div>
+          <label htmlFor="cf-exam" className="sr-only">Select service</label>
+          <select id="cf-exam" required className="field" value={data.exam}
+            onChange={(e) => setData({ ...data, exam: e.target.value })}>
+            <option value="" disabled>Select Service</option>
+            {examOptions.map((o) => <option key={o} value={o}>{o}</option>)}
+          </select>
+        </div>
       </div>
-      <input className="field" placeholder="Deadline (optional)" />
-      <textarea required className="field" placeholder="Tell us about your exam, course or deadline..." />
-      <button className="btn-cta w-full h-[58px] text-base">SEND MESSAGE — GET QUOTE IN 5 MIN →</button>
+      <div>
+        <label htmlFor="cf-deadline" className="sr-only">Deadline</label>
+        <input id="cf-deadline" className="field" placeholder="Deadline (optional)"
+          value={data.deadline} onChange={(e) => setData({ ...data, deadline: e.target.value })} />
+      </div>
+      <div>
+        <label htmlFor="cf-message" className="sr-only">Tell us about your exam or course</label>
+        <textarea id="cf-message" required className="field"
+          placeholder="Tell us about your exam, course or deadline..."
+          value={data.message} onChange={(e) => setData({ ...data, message: e.target.value })} />
+      </div>
+
+      {/* Honeypot */}
+      <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true"
+        className="hidden" value={data.company}
+        onChange={(e) => setData({ ...data, company: e.target.value })} />
+
+      <button type="submit" disabled={state === "sending"}
+        className="btn-cta w-full h-[58px] text-base disabled:opacity-70 disabled:cursor-wait">
+        {state === "sending" ? "SENDING…" : "SEND MESSAGE — GET QUOTE IN 5 MIN →"}
+      </button>
       <p className="text-sm text-center text-[#7678ED]">🔒 100% private • SSL secured • No spam, ever.</p>
     </form>
   );
 }
 
-/* ==================== TESTIMONIALS PAGE ==================== */
-export function TestimonialsPage({ navigate }: Nav) {
+
+/* ==================== SERVICES INDEX ==================== */
+export function ServicesIndexPage() {
   return (
     <>
-      <PageHero title="Real Students. Real Results. Real Stories." subtitle="Read what students across America are saying about HelpMyCourseNow." navigate={navigate} />
+      <PageHero
+        title="Expert Help For Every Exam & Course"
+        subtitle="High school to PhD. Pick your exam or course below and we'll match you with a specialist who has already passed it."
+      />
+      <section className="section-pad bg-white reveal-section">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((s) => (
+              <Link key={s.slug} to={`/services/${s.slug}`}
+                className="lift-card bg-white text-[#1f1f2e] rounded-2xl overflow-hidden relative border-2 border-[#eeeefb]">
+                <div className="bg-[#3D348B] h-2 w-full" />
+                {s.popular && (
+                  <div className="absolute top-4 right-4 bg-[#F7B801] text-[#2A2565] text-[10px] font-extrabold px-2.5 py-1 rounded-full">
+                    ⭐ MOST POPULAR
+                  </div>
+                )}
+                <div className="p-6">
+                  <div className="text-4xl text-[#F7B801]">{s.emoji}</div>
+                  <h2 className="font-display font-bold text-[#3D348B] text-xl mt-3">{s.title}</h2>
+                  <p className="text-[#3D348B]/70 text-base mt-2 leading-relaxed">{s.short}</p>
+                  <span className="mt-4 inline-flex items-center text-[#F35B04] font-bold text-base">
+                    Learn More →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-14 bg-[#F9F9FF] border-2 border-[#eeeefb] rounded-2xl p-8 text-center">
+            <h2 className="font-display font-extrabold text-[#3D348B] text-2xl">Don't See Your Exam Or Course?</h2>
+            <p className="text-[#3D348B]/70 mt-2 text-base max-w-2xl mx-auto">
+              We cover far more than what's listed here — including Canvas, Blackboard, Moodle, D2L Brightspace,
+              Pearson MyLab, McGraw-Hill Connect, ALEKS, Cengage MindTap and WileyPlus.
+            </p>
+            <Link to="/contact" className="btn-cta mt-6 h-[58px] px-7 text-base">
+              Ask About Your Exam →
+            </Link>
+          </div>
+        </div>
+      </section>
+      <CTASection />
+    </>
+  );
+}
+
+/* ==================== TESTIMONIALS PAGE ==================== */
+export function TestimonialsPage() {
+  return (
+    <>
+      <PageHero title="Real Students. Real Results. Real Stories." subtitle="Read what students across America are saying about HelpMyCourseNow." />
       <section className="section-pad bg-white reveal-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center">
@@ -220,17 +370,17 @@ export function TestimonialsPage({ navigate }: Nav) {
           </div>
         </div>
       </section>
-      <CTASection navigate={navigate} />
+      <CTASection />
     </>
   );
 }
 
 /* ==================== FAQ PAGE ==================== */
-export function FAQPage({ navigate }: Nav) {
+export function FAQPage() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <>
-      <PageHero title="Frequently Asked Questions" subtitle="Everything you've ever wanted to know about HelpMyCourseNow — answered honestly." navigate={navigate} />
+      <PageHero title="Frequently Asked Questions" subtitle="Everything you've ever wanted to know about HelpMyCourseNow — answered honestly." />
       <section className="section-pad bg-white reveal-section">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-3">
           {homeFaqs.map((f, i) => (
@@ -246,49 +396,110 @@ export function FAQPage({ navigate }: Nav) {
           ))}
         </div>
       </section>
-      <CTASection navigate={navigate} />
+      <CTASection />
     </>
   );
 }
 
 /* ==================== BLOG INDEX ==================== */
-export function BlogPage({ navigate }: Nav) {
-  const featured = blogPosts[0];
-  const rest = blogPosts.slice(1);
+export function BlogPage() {
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<string | null>(null);
+
+  const matches = (p: (typeof blogPosts)[number]) => {
+    const q = query.trim().toLowerCase();
+    const inQuery =
+      q === "" ||
+      p.title.toLowerCase().includes(q) ||
+      p.excerpt.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q);
+    const inCategory = category === null || p.category === category;
+    return inQuery && inCategory;
+  };
+
+  const filtered = blogPosts.filter(matches);
+  const isFiltering = query.trim() !== "" || category !== null;
+  const featured = filtered[0];
+  const rest = filtered.slice(1);
   return (
     <>
       <PageHero title="Expert Tips • Student Success • Exam Guides" subtitle="Free resources to help you pass your next exam, finish your course, and earn the credentials you deserve." />
       <section className="bg-white py-14 reveal-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2 space-y-8">
-            <button onClick={() => navigate(`/blog/${featured.slug}`)} className="block w-full text-left bg-gradient-to-br from-[#3D348B] to-[#7678ED] text-white rounded-2xl overflow-hidden lift-card">
+            {filtered.length === 0 && (
+              <div className="bg-[#F9F9FF] border-2 border-[#eeeefb] rounded-2xl p-10 text-center">
+                <div className="text-4xl">🔍</div>
+                <h3 className="font-display font-bold text-[#3D348B] text-xl mt-3">No articles found</h3>
+                <p className="text-[#3D348B]/70 mt-2 text-base">
+                  Nothing matches "{query}"{category ? ` in ${category}` : ""}. Try a different search.
+                </p>
+                <button
+                  onClick={() => { setQuery(""); setCategory(null); }}
+                  className="btn-cta mt-5 h-[54px] px-6"
+                >
+                  Clear filters
+                </button>
+              </div>
+            )}
+
+            {featured && (
+            <Link to={`/blog/${featured.slug}`} className="block w-full text-left bg-gradient-to-br from-[#3D348B] to-[#7678ED] text-white rounded-2xl overflow-hidden lift-card">
               <div className="p-8">
-                <span className="inline-block bg-[#F7B801] text-[#2A2565] text-xs font-extrabold px-3 py-1 rounded-full">FEATURED</span>
+                {!isFiltering && (
+                  <span className="inline-block bg-[#F7B801] text-[#2A2565] text-xs font-extrabold px-3 py-1 rounded-full">FEATURED</span>
+                )}
                 <h2 className="font-display font-extrabold text-2xl sm:text-3xl mt-4">{featured.title}</h2>
                 <p className="opacity-90 mt-3 text-base">{featured.excerpt}</p>
                 <div className="mt-4 text-base opacity-90">{featured.date} • {featured.readTime}</div>
               </div>
-            </button>
+            </Link>
+            )}
             <div className="grid sm:grid-cols-2 gap-5">
               {rest.map((p) => (
-                <button key={p.slug} onClick={() => navigate(`/blog/${p.slug}`)} className="text-left bg-white border-2 border-[#eeeefb] rounded-2xl p-5 lift-card">
+                <Link key={p.slug} to={`/blog/${p.slug}`} className="text-left bg-white border-2 border-[#eeeefb] rounded-2xl p-5 lift-card">
                   <span className="text-xs font-bold text-[#F35B04] uppercase tracking-wider">{p.category}</span>
                   <h3 className="font-display font-bold text-[#3D348B] text-lg mt-2 line-clamp-2">{p.title}</h3>
                   <p className="text-base text-[#3D348B]/70 mt-2 line-clamp-3">{p.excerpt}</p>
                   <div className="text-sm text-[#7678ED] mt-3">{p.date} • {p.readTime}</div>
-                </button>
+                </Link>
               ))}
             </div>
           </div>
           <aside className="space-y-5">
             <div className="bg-white border-2 border-[#eeeefb] rounded-xl p-4">
-              <input className="field" placeholder="🔍 Search articles..." />
+              <label htmlFor="blog-search" className="sr-only">Search articles</label>
+              <input
+                id="blog-search"
+                type="search"
+                className="field"
+                placeholder="🔍 Search articles..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
             </div>
             <LeadForm variant="compact" title="Get Free Expert Help" buttonLabel="GET HELP NOW →" />
             <div className="bg-white border-2 border-[#eeeefb] rounded-xl p-5">
               <h4 className="font-display font-bold text-[#3D348B] mb-3">Categories</h4>
               <ul className="space-y-2 text-base">
-                {blogCategories.map((c) => <li key={c}><span className="text-[#3D348B]/70 hover:text-[#F35B04] cursor-pointer transition-colors">{c}</span></li>)}
+                <li>
+                  <button
+                    onClick={() => setCategory(null)}
+                    className={`text-left transition-colors ${category === null ? "text-[#F35B04] font-semibold" : "text-[#3D348B]/70 hover:text-[#F35B04]"}`}
+                  >
+                    All articles
+                  </button>
+                </li>
+                {blogCategories.map((c) => (
+                  <li key={c}>
+                    <button
+                      onClick={() => setCategory(category === c ? null : c)}
+                      className={`text-left transition-colors ${category === c ? "text-[#F35B04] font-semibold" : "text-[#3D348B]/70 hover:text-[#F35B04]"}`}
+                    >
+                      {c}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="bg-[#3D348B] text-white rounded-xl p-5 text-center">
@@ -299,19 +510,19 @@ export function BlogPage({ navigate }: Nav) {
           </aside>
         </div>
       </section>
-      <CTASection navigate={navigate} />
+      <CTASection />
     </>
   );
 }
 
 /* ==================== BLOG POST ==================== */
-export function BlogPostPage({ slug, navigate }: { slug: string; navigate: (p: string) => void }) {
+export function BlogPostPage({ slug }: { slug: string }) {
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) {
     return (
       <section className="section-pad bg-white max-w-3xl mx-auto px-4 text-center">
         <h1 className="font-display font-extrabold text-3xl text-[#3D348B]">Post Not Found</h1>
-        <button onClick={() => navigate("/blog")} className="btn-cta mt-6 h-[54px] px-6">← Back To Blog</button>
+        <Link to="/blog" className="btn-cta mt-6 h-[54px] px-6">← Back To Blog</Link>
       </section>
     );
   }
@@ -323,7 +534,7 @@ export function BlogPostPage({ slug, navigate }: { slug: string; navigate: (p: s
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-3 gap-10">
           <article className="lg:col-span-2">
             <div className="text-base text-[#7678ED] mb-2">
-              <button onClick={() => navigate("/blog")} className="text-[#F35B04] font-semibold">← Blog</button> • {post.category} • {post.readTime}
+              <Link to="/blog" className="text-[#F35B04] font-semibold">← Blog</Link> • {post.category} • {post.readTime}
             </div>
             <div className="max-w-none">
               {post.body.map((b, i) => (
@@ -341,16 +552,16 @@ export function BlogPostPage({ slug, navigate }: { slug: string; navigate: (p: s
             <div className="mt-12 bg-gradient-to-br from-[#3D348B] to-[#7678ED] rounded-2xl p-8 text-white text-center">
               <h3 className="font-display font-extrabold text-2xl">Need Expert Help?</h3>
               <p className="opacity-90 mt-2 text-base">Stop researching — start passing. Our experts are 5 minutes away.</p>
-              <button onClick={() => navigate("/contact")} className="btn-cta mt-5 h-[58px] px-7">Message Us Now →</button>
+              <Link to="/contact" className="btn-cta mt-5 h-[58px] px-7">Message Us Now →</Link>
             </div>
             <div className="mt-12">
               <h3 className="font-display font-bold text-[#3D348B] text-xl">Related Articles</h3>
               <div className="grid sm:grid-cols-3 gap-4 mt-4">
                 {related.map((r) => (
-                  <button key={r.slug} onClick={() => navigate(`/blog/${r.slug}`)} className="text-left bg-white border-2 border-[#eeeefb] rounded-xl p-4 lift-card">
+                  <Link key={r.slug} to={`/blog/${r.slug}`} className="text-left bg-white border-2 border-[#eeeefb] rounded-xl p-4 lift-card">
                     <div className="text-xs font-bold text-[#F35B04] uppercase">{r.category}</div>
                     <div className="font-display font-bold text-[#3D348B] mt-1 text-base line-clamp-3">{r.title}</div>
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -370,7 +581,7 @@ export function BlogPostPage({ slug, navigate }: { slug: string; navigate: (p: s
 }
 
 /* ==================== LEGAL ==================== */
-export function LegalPage({ kind, navigate }: { kind: "privacy" | "terms"; navigate: (p: string) => void }) {
+export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
   const isPrivacy = kind === "privacy";
   return (
     <>
@@ -383,8 +594,11 @@ export function LegalPage({ kind, navigate }: { kind: "privacy" | "terms"; navig
               <p className="text-[#3D348B]/70 mt-3 leading-relaxed text-base">{s.b}</p>
             </div>
           ))}
-          <p className="text-base text-[#7678ED] mt-10">Last updated: January 2025</p>
-          <button onClick={() => navigate("/contact")} className="btn-cta h-[54px] px-7">Have Questions? Contact Us →</button>
+          <p className="text-base text-[#7678ED] mt-10">
+            Last updated:{" "}
+            {new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+          </p>
+          <Link to="/contact" className="btn-cta h-[54px] px-7">Have Questions? Contact Us →</Link>
         </div>
       </section>
     </>
@@ -396,9 +610,9 @@ const privacySections = [
   { t: "2. How We Use Your Information", b: "Your information is used solely to match you with the right expert and to communicate about your service. We do not use your data for advertising, profiling, or sale to third parties." },
   { t: "3. Data Security", b: "All communication is encrypted in transit (SSL/TLS). Payment information is processed via PCI-compliant providers. We do not store payment card data on our servers." },
   { t: "4. Confidentiality", b: "We have never compromised a student's privacy in our entire operating history. Our experts are bound by strict NDAs and our internal policies prohibit any disclosure of client identity or work product." },
-  { t: "5. Cookies", b: "We use only essential cookies for site functionality and anonymous analytics (Google Analytics). You can disable cookies in your browser at any time." },
+  { t: "5. Cookies & Advertising", b: "We use essential cookies to run this site, and — only if you click \"Accept All Cookies\" — advertising and analytics cookies, including the Meta (Facebook) Pixel, which lets us measure and personalise advertising on Facebook and Instagram. No advertising or analytics cookies are set before you consent. You can decline via the cookie banner, or change your choice at any time by clearing this site's cookies in your browser." },
   { t: "6. Data Retention", b: "We retain your account data for as long as your account is active and for up to 90 days after final delivery. After that, all personally identifiable information is permanently deleted." },
-  { t: "7. Your Rights", b: "You have the right to access, correct or delete your data at any time by emailing privacy@helpmycoursenow.com." },
+  { t: "7. Your Rights", b: `You have the right to access, correct or delete your data at any time by emailing ${PRIVACY_EMAIL}.` },
   { t: "8. Contact", b: "Questions about this policy? Email privacy@helpmycoursenow.com or message us on WhatsApp." },
 ];
 

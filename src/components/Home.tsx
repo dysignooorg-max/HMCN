@@ -1,27 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import LeadForm from "./LeadForm";
+import Link from "./Link";
 import { CTASection } from "./Layout";
 import { services, testimonials, homeFaqs } from "../data";
 import { trackContact, trackInitiateCheckout } from "../utils/pixel";
 
-const FB_LINK = "https://www.facebook.com/profile.php?id=61589640929259";
+import { chatUrl, hasWhatsApp } from "../config";
 
-type NavProp = { navigate: (p: string) => void };
-
-export default function Home({ navigate }: NavProp) {
+export default function Home() {
   return (
     <>
-      <Hero navigate={navigate} />
+      <Hero />
       <LogoSlider />
-      <PainPoints navigate={navigate} />
-      <ServicesSection navigate={navigate} />
-      <HowItWorks navigate={navigate} />
+      <PainPoints />
+      <ServicesSection />
+      <HowItWorks />
       <StatsBar />
-      <Testimonials navigate={navigate} />
-      <ConfidentialitySection navigate={navigate} />
-      <PricingSection navigate={navigate} />
-      <FAQSection navigate={navigate} />
-      <CTASection navigate={navigate} />
+      <Testimonials />
+      <ConfidentialitySection />
+      <PricingSection />
+      <FAQSection />
+      <CTASection />
     </>
   );
 }
@@ -29,7 +28,7 @@ export default function Home({ navigate }: NavProp) {
 /* ====================================================================
    HERO SECTION
    ==================================================================== */
-function Hero({ navigate }: NavProp) {
+function Hero() {
   return (
     <section className="relative bg-gradient-to-br from-[#3D348B] via-[#4a3fa0] to-[#7678ED] text-white overflow-hidden">
       <div className="bg-pattern absolute inset-0" />
@@ -59,12 +58,12 @@ function Hero({ navigate }: NavProp) {
             </div>
 
             <div className="mt-7 flex flex-col gap-3 max-w-md">
-              <button onClick={() => { trackInitiateCheckout(); navigate("/contact"); }} className="btn-cta h-[64px] text-lg sm:text-xl font-extrabold">
+              <Link to="/contact" onClick={() => trackInitiateCheckout()} className="btn-cta h-[64px] text-lg sm:text-xl font-extrabold">
                 GET EXPERT HELP NOW →
-              </button>
+              </Link>
               <div className="text-base text-white/90 text-center">📩 Response within 5 minutes • 24/7</div>
-              <a href={FB_LINK} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="text-center text-[#F7B801] font-bold underline hover:text-white transition-colors">
-                💬 Or Message Us on WhatsApp
+              <a href={chatUrl()} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="text-center text-[#F7B801] font-bold underline hover:text-white transition-colors">
+                {hasWhatsApp() ? "💬 Or Message Us on WhatsApp" : "💬 Or Message Us Now"}
               </a>
             </div>
 
@@ -196,7 +195,7 @@ function LogoSlider() {
 /* ====================================================================
    PAIN POINTS
    ==================================================================== */
-function PainPoints({ navigate }: NavProp) {
+function PainPoints() {
   const cards = [
     { e: "⏰", t: "Running Out Of Time?", b: "Your exam is in days and you haven't started. Deadlines feel impossible when life gets in the way." },
     { e: "😰", t: "Afraid of Failing?", b: "One failed exam can cost you months of progress, money, and the career opportunity you've worked for." },
@@ -226,9 +225,9 @@ function PainPoints({ navigate }: NavProp) {
           <p className="font-display font-bold text-[#F35B04] text-xl sm:text-2xl">
             Whatever your situation — WE HAVE AN EXPERT FOR YOU.
           </p>
-          <button onClick={() => { trackInitiateCheckout(); navigate("/contact"); }} className="btn-cta mt-5 h-[58px] px-7 text-base">
+          <Link to="/contact" onClick={() => trackInitiateCheckout()} className="btn-cta mt-5 h-[58px] px-7 text-base">
             Find Your Expert Now →
-          </button>
+</Link>
         </div>
       </div>
     </section>
@@ -238,7 +237,7 @@ function PainPoints({ navigate }: NavProp) {
 /* ====================================================================
    SERVICES
    ==================================================================== */
-function ServicesSection({ navigate }: NavProp) {
+function ServicesSection() {
   return (
     <section className="bg-[#3D348B] text-white py-16 sm:py-20 relative overflow-hidden reveal-section">
       <div className="bg-pattern absolute inset-0" />
@@ -261,10 +260,10 @@ function ServicesSection({ navigate }: NavProp) {
                 <div className="text-4xl text-[#F7B801]">{s.emoji}</div>
                 <h3 className="font-display font-bold text-[#3D348B] text-xl mt-3">{s.title}</h3>
                 <p className="text-[#3D348B]/70 text-base mt-2 leading-relaxed">{s.short}</p>
-                <button onClick={() => navigate(`/services/${s.slug}`)}
+                <Link to={`/services/${s.slug}`}
                   className="mt-4 inline-flex items-center text-[#F35B04] font-bold text-base hover:underline">
                   Learn More →
-                </button>
+                </Link>
               </div>
             </div>
           ))}
@@ -277,7 +276,7 @@ function ServicesSection({ navigate }: NavProp) {
 /* ====================================================================
    HOW IT WORKS
    ==================================================================== */
-function HowItWorks({ navigate }: NavProp) {
+function HowItWorks() {
   const steps = [
     { n: 1, e: "🖊️", t: "Tell Us What You Need", b: "Fill our quick form or message us on WhatsApp. Takes less than 2 minutes." },
     { n: 2, e: "🤝", t: "We Match You With An Expert", b: "Within minutes, we connect you with a qualified specialist for your exact exam or course." },
@@ -307,9 +306,9 @@ function HowItWorks({ navigate }: NavProp) {
         </div>
 
         <div className="text-center mt-12">
-          <button onClick={() => { trackInitiateCheckout(); navigate("/contact"); }} className="btn-cta h-[58px] px-7 text-base">
+          <Link to="/contact" onClick={() => trackInitiateCheckout()} className="btn-cta h-[58px] px-7 text-base">
             Start Now — It Takes 2 Minutes →
-          </button>
+</Link>
         </div>
       </div>
     </section>
@@ -374,7 +373,7 @@ function Stat({ n, l }: { n: string; l: string }) {
 /* ====================================================================
    TESTIMONIALS
    ==================================================================== */
-function Testimonials({ navigate }: NavProp) {
+function Testimonials() {
   const [idx, setIdx] = useState(0);
   const visible = 3;
   const max = testimonials.length - visible;
@@ -408,9 +407,9 @@ function Testimonials({ navigate }: NavProp) {
         </div>
 
         <div className="text-center mt-8">
-          <button onClick={() => { trackInitiateCheckout(); navigate("/contact"); }} className="btn-cta h-[58px] px-7 text-base">
+          <Link to="/contact" onClick={() => trackInitiateCheckout()} className="btn-cta h-[58px] px-7 text-base">
             Join Thousands of Successful Students →
-          </button>
+</Link>
         </div>
       </div>
     </section>
@@ -441,7 +440,7 @@ function TestimonialCard({ t }: { t: typeof testimonials[number] }) {
 /* ====================================================================
    CONFIDENTIALITY
    ==================================================================== */
-function ConfidentialitySection({ navigate }: NavProp) {
+function ConfidentialitySection() {
   const items = [
     { e: "🔒", t: "100% Confidential", b: "All interactions kept completely private." },
     { e: "🛡️", t: "Secure IP Protection", b: "We access your exam from secure systems." },
@@ -470,9 +469,9 @@ function ConfidentialitySection({ navigate }: NavProp) {
         <p className="font-display font-bold text-[#F7B801] text-xl sm:text-2xl mt-10">
           We have NEVER compromised a student's privacy. Ever.
         </p>
-        <button onClick={() => { trackInitiateCheckout(); navigate("/contact"); }} className="btn-cta mt-6 h-[58px] px-7 text-base">
+        <Link to="/contact" onClick={() => trackInitiateCheckout()} className="btn-cta mt-6 h-[58px] px-7 text-base">
           Get Started Confidentially →
-        </button>
+</Link>
       </div>
     </section>
   );
@@ -481,7 +480,7 @@ function ConfidentialitySection({ navigate }: NavProp) {
 /* ====================================================================
    PRICING
    ==================================================================== */
-function PricingSection({ navigate }: NavProp) {
+function PricingSection() {
   const cards = [
     { t: "Single Exam Help", p: "$99", per: "per exam", items: ["One proctored or online exam", "Qualified expert assigned", "Results guaranteed", "100% confidential"] },
     { t: "Full Course Help", p: "$199", per: "per week", popular: true, items: ["Complete course management", "All assignments & quizzes", "Weekly progress updates", "Dedicated expert assigned"] },
@@ -517,17 +516,17 @@ function PricingSection({ navigate }: NavProp) {
                   </li>
                 ))}
               </ul>
-              <button onClick={() => { trackInitiateCheckout(); navigate("/contact"); }}
+              <Link to="/contact" onClick={() => trackInitiateCheckout()}
                 className={`w-full h-[54px] mt-6 font-extrabold rounded-xl ${c.popular ? "btn-cta text-base" : "bg-[#3D348B] text-white hover:bg-[#2A2565] inline-flex items-center justify-center transition-colors"}`}>
                 GET QUOTE →
-              </button>
+              </Link>
             </div>
           ))}
         </div>
 
         <div className="mt-8 text-center text-[#3D348B]/70 text-base">
           Not sure what you need?{" "}
-          <a href={FB_LINK} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="text-[#F35B04] font-bold underline">Message us</a>{" "}
+          <a href={chatUrl()} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="text-[#F35B04] font-bold underline">Message us</a>{" "}
           — we'll build you a custom plan.
         </div>
       </div>
@@ -538,7 +537,7 @@ function PricingSection({ navigate }: NavProp) {
 /* ====================================================================
    FAQ — smooth accordion
    ==================================================================== */
-function FAQSection({ navigate }: NavProp) {
+function FAQSection() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <section className="bg-white section-pad reveal-section">
@@ -566,9 +565,9 @@ function FAQSection({ navigate }: NavProp) {
 
         <div className="text-center mt-10">
           <p className="text-[#3D348B]/70 text-base">Still have questions? We're available 24/7</p>
-          <button onClick={() => { trackInitiateCheckout(); navigate("/contact"); }} className="btn-cta mt-4 h-[58px] px-7 text-base">
+          <Link to="/contact" onClick={() => trackInitiateCheckout()} className="btn-cta mt-4 h-[58px] px-7 text-base">
             Chat Now →
-          </button>
+</Link>
         </div>
       </div>
     </section>

@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
+import { grantConsent, revokeConsent } from "../utils/pixel";
 
 export default function CookieConsent({ onPrivacy }: { onPrivacy: () => void }) {
   const [visible, setVisible] = useState(false);
@@ -26,10 +21,7 @@ export default function CookieConsent({ onPrivacy }: { onPrivacy: () => void }) 
     try {
       localStorage.setItem("hmcn_consent", "accepted");
     } catch { /* noop */ }
-    if (window.fbq) {
-      window.fbq("consent", "grant");
-      window.fbq("track", "PageView");
-    }
+    grantConsent();
     setVisible(false);
   }
 
@@ -37,6 +29,7 @@ export default function CookieConsent({ onPrivacy }: { onPrivacy: () => void }) 
     try {
       localStorage.setItem("hmcn_consent", "declined");
     } catch { /* noop */ }
+    revokeConsent();
     setVisible(false);
   }
 
