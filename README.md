@@ -90,7 +90,39 @@ The POST body looks like:
 Forms also include a honeypot field (`company`) that silently discards bot
 submissions.
 
-### Deploying
+### Deploying to GitHub Pages
+
+**Important:** GitHub Pages does **not** run `npm run build` — by default it
+serves files exactly as they are committed. Because this repo's `index.html`
+points at `/src/main.tsx` (TypeScript, which browsers cannot execute), serving
+the raw source shows a **blank white page**.
+
+The workflow in `.github/workflows/deploy-pages.yml` fixes this by building the
+site and publishing the result. Two one-time settings are required:
+
+1. **Settings → Pages → Build and deployment → Source: _GitHub Actions_**
+   (not "Deploy from a branch")
+2. Merge the PR to `main` — the `github-pages` environment only permits
+   deployments from the default branch
+
+Once both are set, the site builds and deploys automatically on every push to
+`main`, and is served at:
+
+    https://dysignooorg-max.github.io/HMCN/
+
+The workflow sets `VITE_BASE=/HMCN/` so assets resolve from the `/HMCN/`
+subpath. **When you move to a custom domain, change that to `/`.**
+
+#### Moving to helpmycoursenow.com
+
+1. In `index.html`, the canonical and `og:url`/`og:image` tags already point at
+   `https://www.helpmycoursenow.com/` — no change needed.
+2. Add a `CNAME` file containing `www.helpmycoursenow.com` to `public/`.
+3. In the workflow, change `VITE_BASE: /HMCN/` to `VITE_BASE: /`.
+4. Point DNS at GitHub Pages (`A` records for the apex, `CNAME` for `www`),
+   then enable "Enforce HTTPS" in Settings → Pages.
+
+### Deploying anywhere else
 
 `npm run build` produces `dist/index.html` plus `public/` assets. Upload the
 contents of `dist/` to any static host (Netlify, Vercel, Cloudflare Pages, S3,
