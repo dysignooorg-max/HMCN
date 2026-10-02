@@ -36,23 +36,35 @@ export const FACEBOOK_URL =
 export const LEAD_ENDPOINT: string = "";
 
 /**
- * WhatsApp click-to-chat link, e.g. "https://wa.me/15551234567".
- * Strongly recommended. Several buttons are styled bright WhatsApp green and
- * labelled "Chat With Us Now"; with this empty they render as "Message Us"
- * and point at Facebook instead.
- * Also used as the fallback destination for lead forms.
+ * WhatsApp click-to-chat link.
+ *
+ * Format: "https://wa.me/<country code><number>" — digits only, no "+",
+ * spaces, dashes or brackets, or the link 404s in the WhatsApp app.
  */
-export const WHATSAPP_URL: string = "";
+export const WHATSAPP_URL: string = "https://wa.me/12143560059";
 
 /**
- * Public phone number, digits only, in E.164 format (no spaces or dashes).
- * Leave empty ("") and every "Call Us 24/7" button hides itself rather than
- * dialling a dead number. Set it and the buttons appear automatically.
+ * Public phone number, digits only, in E.164 format (no "+" or dashes).
+ *
+ * Used for the `tel:` fallback and for Schema.org structured data.
+ * NOTE: on this site phone links deliberately open WhatsApp instead of
+ * dialling — see `phoneUrl()` below and `PHONE_OPENS_WHATSAPP`.
  */
-export const PHONE_E164: string = "";
+export const PHONE_E164: string = "12143560059";
 
-/** Phone number as displayed to humans, e.g. "+1 (555) 123-4567". */
-export const PHONE_DISPLAY: string = "";
+/** Phone number as displayed to humans. */
+export const PHONE_DISPLAY: string = "+1 (214) 356-0059";
+
+/**
+ * When true, every phone link opens a WhatsApp chat instead of dialling.
+ *
+ * Set by the site owner: tapping the phone number or any "call" button
+ * should start a WhatsApp conversation, so enquiries always land in
+ * WhatsApp rather than being missed as a missed call.
+ *
+ * Flip to `false` to restore normal `tel:` dialling.
+ */
+export const PHONE_OPENS_WHATSAPP = true;
 
 /** Support inbox. TODO: confirm this mailbox exists and is monitored. */
 export const EMAIL: string = "hello@helpmycoursenow.com";
@@ -74,15 +86,43 @@ export const INSTAGRAM_URL: string = "";
 
 /**
  * Best available "talk to a human now" link, in priority order.
- * Used by the floating chat button and the sticky mobile bar.
+ * Used by the floating chat button, sticky mobile bar and every WhatsApp CTA.
  */
 export function chatUrl(): string {
   return WHATSAPP_URL || FACEBOOK_URL;
 }
 
+/**
+ * Where the phone number and every "call" button should point.
+ *
+ * With `PHONE_OPENS_WHATSAPP` enabled (the current setting) this returns the
+ * WhatsApp chat link, so tapping the phone number opens WhatsApp rather than
+ * the dialler. Otherwise it falls back to a normal `tel:` link.
+ */
+export function phoneUrl(): string {
+  if (PHONE_OPENS_WHATSAPP && WHATSAPP_URL) return WHATSAPP_URL;
+  if (WHATSAPP_URL && !PHONE_E164) return WHATSAPP_URL;
+  return `tel:+${PHONE_E164}`;
+}
+
+/**
+ * Opens WhatsApp with an optional pre-filled message.
+ * Used for phone/WhatsApp CTAs so the visitor never has to type the number.
+ */
+export function whatsappUrl(message?: string): string {
+  const base = WHATSAPP_URL || FACEBOOK_URL;
+  if (!message || !WHATSAPP_URL) return base;
+  return `${base}${base.includes("?") ? "&" : "?"}text=${encodeURIComponent(message)}`;
+}
+
 /** True when a real WhatsApp number has been configured. */
 export function hasWhatsApp(): boolean {
   return WHATSAPP_URL.length > 0;
+}
+
+/** True when phone numbers/buttons open WhatsApp instead of dialling. */
+export function phoneOpensWhatsApp(): boolean {
+  return PHONE_OPENS_WHATSAPP && hasWhatsApp();
 }
 
 /**

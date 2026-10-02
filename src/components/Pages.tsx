@@ -9,11 +9,13 @@ import { VIDEO_EMBED_URL } from "../config";
 
 import {
   EMAIL,
-  PHONE_E164,
   PHONE_DISPLAY,
+  phoneUrl,
+  phoneOpensWhatsApp,
   PRIVACY_EMAIL,
   chatUrl,
   hasWhatsApp,
+  whatsappUrl,
 } from "../config";
 
 /* ==================== HOW IT WORKS ==================== */
@@ -139,7 +141,7 @@ export function AboutPage() {
 export function ContactPage() {
   return (
     <>
-      <PageHero title="Get In Touch — We Reply In 5 Minutes" subtitle="Fill the form, send a WhatsApp, or call us. We're available 24/7 across the United States." />
+      <PageHero title="Get In Touch — We Reply In 5 Minutes" subtitle="Fill the form or send us a WhatsApp message. We're available 24/7 across the United States." />
       <section className="section-pad bg-white reveal-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-10">
           <div>
@@ -150,15 +152,23 @@ export function ContactPage() {
             </div>
           </div>
           <div className="space-y-5">
-            <a href={chatUrl()} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="block bg-[#25D366] text-white rounded-2xl p-7 hover:scale-[1.01] transition lift-card">
+            <a href={whatsappUrl("Hi! I need help with my exam or course.")} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="block bg-[#25D366] text-white rounded-2xl p-7 hover:scale-[1.01] transition lift-card">
               <div className="text-4xl">💬</div>
               <div className="font-display font-extrabold text-2xl mt-2">{hasWhatsApp() ? "Message Us On WhatsApp" : "Message Us Now"}</div>
               <div className="opacity-90 mt-1 text-base">Fastest way to get matched with an expert.</div>
             </a>
-            {PHONE_E164 && (
-              <a href={`tel:+${PHONE_E164}`} className="block bg-[#3D348B] text-white rounded-2xl p-7 hover:scale-[1.01] transition lift-card">
-                <div className="text-4xl">📞</div>
-                <div className="font-display font-extrabold text-2xl mt-2">Call Us 24/7</div>
+            {PHONE_DISPLAY && (
+              <a
+                href={phoneUrl()}
+                target={phoneOpensWhatsApp() ? "_blank" : undefined}
+                rel={phoneOpensWhatsApp() ? "noopener noreferrer" : undefined}
+                onClick={() => trackContact()}
+                className="block bg-[#3D348B] text-white rounded-2xl p-7 hover:scale-[1.01] transition lift-card"
+              >
+                <div className="text-4xl">{phoneOpensWhatsApp() ? "💬" : "📞"}</div>
+                <div className="font-display font-extrabold text-2xl mt-2">
+                  {phoneOpensWhatsApp() ? "WhatsApp Us 24/7" : "Call Us 24/7"}
+                </div>
                 <div className="opacity-90 mt-1 text-base">{PHONE_DISPLAY}</div>
               </a>
             )}

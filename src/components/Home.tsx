@@ -5,7 +5,7 @@ import { CTASection } from "./Layout";
 import { services, testimonials, homeFaqs } from "../data";
 import { trackContact, trackInitiateCheckout } from "../utils/pixel";
 
-import { chatUrl, hasWhatsApp } from "../config";
+import { hasWhatsApp, whatsappUrl } from "../config";
 
 export default function Home() {
   return (
@@ -62,7 +62,7 @@ function Hero() {
                 GET EXPERT HELP NOW →
               </Link>
               <div className="text-base text-white/90 text-center">📩 Response within 5 minutes • 24/7</div>
-              <a href={chatUrl()} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="text-center text-[#F7B801] font-bold underline hover:text-white transition-colors">
+              <a href={whatsappUrl("Hi! I need help with my exam or course.")} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="text-center text-[#F7B801] font-bold underline hover:text-white transition-colors">
                 {hasWhatsApp() ? "💬 Or Message Us on WhatsApp" : "💬 Or Message Us Now"}
               </a>
             </div>
@@ -526,7 +526,7 @@ function PricingSection() {
 
         <div className="mt-8 text-center text-[#3D348B]/70 text-base">
           Not sure what you need?{" "}
-          <a href={chatUrl()} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="text-[#F35B04] font-bold underline">Message us</a>{" "}
+          <a href={whatsappUrl("Hi! I need help with my exam or course.")} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()} className="text-[#F35B04] font-bold underline">Message us</a>{" "}
           — we'll build you a custom plan.
         </div>
       </div>

@@ -34,12 +34,27 @@ Complete these in **`src/config.ts`** (everything is in one place):
 | Setting | Why it matters |
 |---|---|
 | `LEAD_ENDPOINT` | **Where leads are sent.** Empty = forms fall back to opening a pre-filled WhatsApp/email message. See below. |
-| `PHONE_E164` / `PHONE_DISPLAY` | Without these, every "Call Us 24/7" button is hidden. |
-| `WHATSAPP_URL` | Without this, WhatsApp-styled buttons relabel to "Message Us" and point at Facebook. |
+| `PHONE_E164` / `PHONE_DISPLAY` | ✅ Set to +1 (214) 356-0059. |
+| `WHATSAPP_URL` | ✅ Set to https://wa.me/12143560059. |
+| `PHONE_OPENS_WHATSAPP` | ✅ `true` — phone links open WhatsApp instead of dialling. |
 | `EMAIL` / `PRIVACY_EMAIL` | Confirm both mailboxes exist and are monitored. |
 | `INSTAGRAM_URL` | Hidden until set. |
 | `VIDEO_EMBED_URL` | Optional explainer video. Hidden until set. |
 | `META_PIXEL_ID` | Meta Pixel for ad tracking (consent-gated). |
+
+### Phone & WhatsApp behaviour
+
+Both the **WhatsApp icons** and the **phone number** open a WhatsApp chat with
+`+1 (214) 356-0059` — no visitor ever has to dial, and every enquiry lands in
+WhatsApp. Controlled by `PHONE_OPENS_WHATSAPP` in `src/config.ts`:
+
+- `true` (current) → phone links point at `https://wa.me/12143560059` and
+  buttons are labelled "💬 WhatsApp".
+- `false` → phone links revert to normal `tel:+12143560059` dialling and
+  buttons are labelled "📞 Call Us".
+
+Main "chat with us" buttons open WhatsApp with a pre-filled message
+("Hi! I need help with my exam or course.") so the visitor only has to hit send.
 
 ### Connecting the lead forms
 

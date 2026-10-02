@@ -37,19 +37,18 @@ anymore, but the visitor has to press send themselves.
 *Previously all three forms discarded submissions entirely while showing a
 success message.*
 
-### 🔴 Set `PHONE_E164` and `PHONE_DISPLAY`
+### ✅ WhatsApp & phone — DONE
 
-Until set, every "Call Us 24/7" button is hidden. Set them and they appear
-automatically across the header, footer, contact page and service pages.
+Configured to **+1 (214) 356-0059**:
 
-### 🔴 Set `WHATSAPP_URL`
+- `WHATSAPP_URL` = `https://wa.me/12143560059`
+- `PHONE_E164` = `12143560059`
+- `PHONE_DISPLAY` = `+1 (214) 356-0059`
 
-Format: `https://wa.me/15551234567`
-
-Until set, buttons styled WhatsApp-green are honestly relabelled **"Message Us"**
-and point at your Facebook page. Once set, they become real WhatsApp links
-everywhere (footer, contact page, sticky mobile bar, floating button) and are
-also used as the lead-form fallback destination.
+**Both the WhatsApp icons and the phone number open a WhatsApp chat.** 159
+WhatsApp links across the site, and zero `tel:` links, verified automatically.
+Main CTAs open with a pre-filled message so the visitor only has to press send.
+Control this with `PHONE_OPENS_WHATSAPP` in `src/config.ts`.
 
 ### 🟡 Confirm your mailboxes
 

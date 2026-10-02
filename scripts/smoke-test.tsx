@@ -11,6 +11,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import App from "../src/App";
 import { services, blogPosts } from "../src/data";
 import { PAGE_META } from "../src/utils/seo";
+import { PHONE_E164, PHONE_DISPLAY } from "../src/config";
 
 let failures = 0;
 let checks = 0;
@@ -265,7 +266,37 @@ section("12. Sticky header offsets line up (no overlap)");
   }
 }
 
-section("13. Nav uses real links (crawlable, openable in new tab)");
+section("13. WhatsApp wiring (phone + icons open WhatsApp)");
+{
+  const phoneDigits = PHONE_E164;
+  const waLink = `https://wa.me/${phoneDigits}`;
+  let waCount = 0;
+  let telCount = 0;
+
+  for (const r of rendered) {
+    for (const m of r.html.matchAll(/href="(https:\/\/wa\.me\/[^"]*)"/g)) {
+      waCount++;
+      if (!m[1].startsWith(waLink)) {
+        fail(`${r.route} links to the wrong WhatsApp number: ${m[1]}`);
+      }
+    }
+    for (const m of r.html.matchAll(/href="(tel:[^"]*)"/g)) {
+      telCount++;
+      fail(`${r.route} still has a tel: link (${m[1]}) but PHONE_OPENS_WHATSAPP is on`);
+    }
+  }
+
+  if (waCount > 0) pass(`${waCount} WhatsApp chat links found, all pointing at ${waLink}`);
+  else fail("no wa.me links rendered anywhere");
+
+  if (!rendered.some((r) => r.html.includes(PHONE_DISPLAY))) {
+    fail(`the number ${PHONE_DISPLAY} is never displayed`);
+  } else {
+    pass(`${PHONE_DISPLAY} is displayed to visitors`);
+  }
+}
+
+section("14. Nav uses real links (crawlable, openable in new tab)");
 {
   const home = rendered.find((r) => r.route === "/")!.html;
   const navLinks = [...home.matchAll(/<a[^>]+href="#\/(about|contact|blog|faq|services|how-it-works)[^"]*"/g)];

@@ -11,11 +11,13 @@ import {
   FACEBOOK_URL as FB_LINK,
   INSTAGRAM_URL,
   EMAIL,
-  PHONE_E164,
   PHONE_DISPLAY,
+  phoneUrl,
+  phoneOpensWhatsApp,
   COPYRIGHT_YEAR,
   chatUrl,
   hasWhatsApp,
+  whatsappUrl,
 } from "../config";
 
 type Props = {
@@ -203,9 +205,16 @@ export default function Layout({ children, navigate, current }: Props) {
 
           {/* Desktop CTA buttons */}
           <div className="hidden md:flex items-center gap-2">
-            {PHONE_E164 && (
-              <a href={`tel:+${PHONE_E164}`} className="btn-secondary h-[48px] px-4 text-sm">
-                📞 Call Us
+            {PHONE_DISPLAY && (
+              <a
+                href={phoneUrl()}
+                target={phoneOpensWhatsApp() ? "_blank" : undefined}
+                rel={phoneOpensWhatsApp() ? "noopener noreferrer" : undefined}
+                onClick={() => trackContact()}
+                aria-label={phoneOpensWhatsApp() ? `Chat with us on WhatsApp at ${PHONE_DISPLAY}` : `Call us at ${PHONE_DISPLAY}`}
+                className="btn-secondary h-[48px] px-4 text-sm"
+              >
+                {phoneOpensWhatsApp() ? "💬 WhatsApp" : "📞 Call Us"}
               </a>
             )}
             <Link to="/contact" onClick={() => trackInitiateCheckout()} className="btn-cta h-[48px] px-5 text-sm">
@@ -224,8 +233,16 @@ export default function Layout({ children, navigate, current }: Props) {
         {/* Mobile Menu */}
         {mobileOpen && (
           <div className="lg:hidden bg-[#2A2565] border-t border-[#5750a8] px-4 py-4 space-y-1 max-h-[70vh] overflow-y-auto">
-            {PHONE_E164 && (
-              <a href={`tel:+${PHONE_E164}`} className="btn-secondary w-full h-[54px] justify-center text-base mb-3">📞 Call Us Now</a>
+            {PHONE_DISPLAY && (
+              <a
+                href={phoneUrl()}
+                target={phoneOpensWhatsApp() ? "_blank" : undefined}
+                rel={phoneOpensWhatsApp() ? "noopener noreferrer" : undefined}
+                onClick={() => { trackContact(); setMobileOpen(false); }}
+                className="btn-secondary w-full h-[54px] justify-center text-base mb-3"
+              >
+                {phoneOpensWhatsApp() ? "💬 WhatsApp Us" : "📞 Call Us Now"}
+              </a>
             )}
             <Link to="/contact" onClick={() => setMobileOpen(false)} className="btn-cta w-full h-[54px] justify-center text-base mb-4">Get Help Now →</Link>
             {navLinks.map((l) => (
@@ -296,8 +313,19 @@ export default function Layout({ children, navigate, current }: Props) {
             <h4 className="font-display font-bold text-[#F7B801] mb-4 text-sm tracking-wider">CONTACT</h4>
             <ul className="space-y-3 text-base text-[#cfd0ff]">
               <li>📧 <a href={`mailto:${EMAIL}`} className="hover:text-white transition-colors">{EMAIL}</a></li>
-              {PHONE_E164 && (
-                <li>📞 <a href={`tel:+${PHONE_E164}`} className="hover:text-white transition-colors">{PHONE_DISPLAY}</a></li>
+              {PHONE_DISPLAY && (
+                <li>
+                  {phoneOpensWhatsApp() ? "💬" : "📞"}{" "}
+                  <a
+                    href={phoneUrl()}
+                    target={phoneOpensWhatsApp() ? "_blank" : undefined}
+                    rel={phoneOpensWhatsApp() ? "noopener noreferrer" : undefined}
+                    onClick={() => trackContact()}
+                    className="hover:text-white transition-colors"
+                  >
+                    {PHONE_DISPLAY}
+                  </a>
+                </li>
               )}
               <li>💬 <a href={chatUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Message Us 24/7</a></li>
               <li>🌐 www.helpmycoursenow.com</li>
@@ -322,8 +350,13 @@ export default function Layout({ children, navigate, current }: Props) {
       {scrolled && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 z-[9998] mobile-bar-in bg-[#3D348B] shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
           <div className="grid grid-cols-2 gap-1.5 p-2">
-            <a href={chatUrl()} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()}
-              className="h-[54px] rounded-lg bg-[#25D366] text-white font-bold flex items-center justify-center text-base gap-2">
+            <a
+              href={whatsappUrl("Hi! I need help with my exam or course.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackContact()}
+              className="h-[54px] rounded-lg bg-[#25D366] text-white font-bold flex items-center justify-center text-base gap-2"
+            >
               {hasWhatsApp() ? "💬 WhatsApp" : "💬 Message Us"}
             </a>
             <button onClick={() => { trackInitiateCheckout(); scrollToForm(); }}
@@ -336,7 +369,7 @@ export default function Layout({ children, navigate, current }: Props) {
 
       {/* ============ FLOATING WHATSAPP BUTTON ============ */}
       <a
-        href={chatUrl()}
+        href={whatsappUrl("Hi! I need help with my exam or course.")}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => trackContact()}
@@ -441,9 +474,14 @@ export function CTASection() {
           Our experts are standing by RIGHT NOW — ready to help you pass.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
-          <a href={chatUrl()} target="_blank" rel="noopener noreferrer" onClick={() => trackContact()}
-            className="bg-white text-[#F35B04] font-extrabold rounded-xl h-[58px] px-7 inline-flex items-center justify-center hover:bg-[#F7B801] hover:text-[#3D348B] transition-colors">
-            📩 INBOX US NOW
+          <a
+            href={whatsappUrl("Hi! I need help with my exam or course.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackContact()}
+            className="bg-white text-[#F35B04] font-extrabold rounded-xl h-[58px] px-7 inline-flex items-center justify-center hover:bg-[#F7B801] hover:text-[#3D348B] transition-colors"
+          >
+            💬 CHAT ON WHATSAPP
           </a>
           <Link to="/contact" onClick={() => trackInitiateCheckout()}
             className="border-2 border-white text-white font-extrabold rounded-xl h-[58px] px-7 inline-flex items-center justify-center hover:bg-white/10 transition-colors">
